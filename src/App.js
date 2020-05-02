@@ -60,8 +60,8 @@ class App extends React.Component {
       content = <Wyposazenie backToMenuCallback={ () => this.backToMenu(WYPOSAZENIE)}/>;
     } else {
       content = <div className="d-flex flex-column">
-      <Title id="rezerwacja" className="btn btn-primary w-100 mt-4" onClick={this.onClick}>Rezerwacja</Title>
-      <Title id="stanowiska" className="btn btn-primary w-100 mt-4" onClick={this.onClick}>Stanowiska</Title>
+      <Title id="rezerwacja" className="btn btn-primary w-100 mt-5" onClick={this.onClick}>Rezerwacja stanowiska</Title>
+      <Title id="stanowiska" className="btn btn-primary w-100 mt-4" onClick={this.onClick}>Modyfikacja stanowiska</Title>
       <Title id="osoba" className="btn btn-primary w-100 mt-4" onClick={this.onClick}>Osoba</Title>
       <Title id="wyposazenie" className="btn btn-primary w-100 mt-4" onClick={this.onClick}>Wyposażenie</Title>
     </div>;

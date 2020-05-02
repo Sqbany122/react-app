@@ -50,6 +50,7 @@ class Stanowiska extends React.Component {
     }  else {
       content = <React.Fragment>
         <div className="mt-5">
+        <h1 className="text-center mb-5">Stanowiska</h1>
               <table className="table">
                   <thead>
                       <tr>
@@ -64,7 +65,7 @@ class Stanowiska extends React.Component {
                   </tbody>
               </table>    
           </div>
-          <button className="btn btn-primary" onClick={this.props.backToMenuCallback}>Wróć</button>
+          <button className="btn btn-primary pl-5 pr-5 pt-2 pb-2 mt-5" onClick={this.props.backToMenuCallback}>Wróć</button>
       </React.Fragment>
     }
     return (

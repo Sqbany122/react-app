@@ -38,6 +38,7 @@ class Rezerwacja extends React.Component {
       return (
         <div className="container">
             <div className="mt-5">
+            <h1 className="text-center mb-5">Rezerwacja</h1>
                 <table className="table">
                     <thead>
                         <tr>
@@ -52,7 +53,7 @@ class Rezerwacja extends React.Component {
                     </tbody>
                 </table>    
             </div>
-            <button className="btn btn-primary" onClick={this.props.backToMenuCallback}>Wróć</button>
+            <button className="btn btn-primary pl-5 pr-5 pt-2 pb-2 mt-5" onClick={this.props.backToMenuCallback}>Wróć</button>
         </div>
       );
     }
