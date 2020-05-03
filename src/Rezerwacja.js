@@ -1,5 +1,7 @@
 import React from 'react';
 
+const api = 'http://localhost/api/miejsca_pracy.php';
+
 class Rezerwacja extends React.Component {
     constructor(props) {
       super(props);
@@ -11,20 +13,19 @@ class Rezerwacja extends React.Component {
     }
 
     componentDidMount() {
-        fetch('http://localhost/api/miejsca_pracy.php')
+        fetch(api)
         .then(data => data.json())
         .then(json => {
             this.setState({
                  miejscaPracy: json,
             })
-            console.log(this.state.miejscaPracy);
         })
         
     }
     
     Stanowisko(index) {
         return <React.Fragment>
-            <tr><td>{index[0]}</td><td>{index[1]}</td><td>{index[2]}</td><td><button className="btn btn-primary">Rezerwacja</button></td></tr>
+            <tr className="text-center"><td>{index[0]}</td><td>{index[1]}</td><td>{index[2]}</td><td><button className="btn btn-primary">Rezerwuj</button></td></tr>
         </React.Fragment>;
     }
 
@@ -39,9 +40,9 @@ class Rezerwacja extends React.Component {
         <div className="container">
             <div className="mt-5">
             <h1 className="text-center mb-5">Rezerwacja</h1>
-                <table className="table">
+                <table className="table table-bordered">
                     <thead>
-                        <tr>
+                        <tr className="text-center">
                         <td>Id</td>
                         <td>Oznaczenie</td>
                         <td>Opis</td>

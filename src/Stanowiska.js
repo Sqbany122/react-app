@@ -1,6 +1,8 @@
 import React from 'react';
 import Modal from './Modal.js';
 
+const api = 'http://localhost/api/miejsca_pracy.php';
+
 class Stanowiska extends React.Component {
     constructor(props) {
       super(props);
@@ -14,7 +16,7 @@ class Stanowiska extends React.Component {
     }
   
     componentDidMount() {
-      fetch('http://localhost/api/miejsca_pracy.php')
+      fetch(api)
       .then(data => data.json())
       .then(json => {
           this.setState({
@@ -26,7 +28,7 @@ class Stanowiska extends React.Component {
   
   Stanowisko(index) {
       return <React.Fragment>
-          <tr><td>{index[0]}</td><td>{index[1]}</td><td>{index[2]}</td><td><button id={index[0]} onClick={this.showModal} className="btn btn-primary">Edytuj</button></td></tr>
+          <tr className="text-center"><td>{index[0]}</td><td>{index[1]}</td><td>{index[2]}</td><td><button id={index[0]} onClick={this.showModal} className="btn btn-primary">Edytuj</button></td></tr>
       </React.Fragment>;
   }
 
@@ -35,6 +37,12 @@ class Stanowiska extends React.Component {
       modal: true,
       id: event.target.id,
     });
+  }
+
+  backToMenu() {
+    this.setState({
+      modal: false,
+    })
   }
 
   render() {
@@ -46,14 +54,14 @@ class Stanowiska extends React.Component {
             return this.Stanowisko(index)
         }); 
     if (modal) {
-      content = <Modal id={id}/>;
+      content = <Modal id={id} backToMenuCallback={ () => this.backToMenu()}/>;
     }  else {
       content = <React.Fragment>
-        <div className="mt-5">
+        <div className="pt-5">
         <h1 className="text-center mb-5">Stanowiska</h1>
-              <table className="table">
+              <table className="table table-bordered">
                   <thead>
-                      <tr>
+                      <tr className="text-center">
                       <td>Id</td>
                       <td>Oznaczenie</td>
                       <td>Opis</td>
