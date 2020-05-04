@@ -85,6 +85,9 @@ class RezerwacjaStanowiska extends React.Component {
             })
         })
         .then((response) => response.text())
+        .then(text => {
+            alert(text);
+          })
         .catch((error) => {
             console.error(error);
         })

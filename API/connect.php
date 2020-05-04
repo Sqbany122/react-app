@@ -110,18 +110,19 @@ class Database {
         $obj = json_decode($json, true);
         $id_miejsce_pracy = $obj['idMiejscePracy'];
         $id_osoba = $obj['idOsoba'];
-        $data_startu_rezerwacji = $obj['dataStartuRezerwacji'];
+        $data_startu_rezerwacji = $obj['dataStartuRezerwacji']; 
         $data_konca_rezerwacji = $obj['dataKoncaRezerwacji'];
         $existDate = "
         SELECT * 
         FROM rezerwacja 
         WHERE (id_miejsce_pracy = '$id_miejsce_pracy' AND data_startu_rezerwacji <= '$data_startu_rezerwacji' AND data_konca_rezerwacji >= '$data_konca_rezerwacji')
         OR (id_miejsce_pracy = '$id_miejsce_pracy' AND data_startu_rezerwacji <= '$data_startu_rezerwacji' AND data_konca_rezerwacji >= '$data_startu_rezerwacji' AND data_konca_rezerwacji <= '$data_konca_rezerwacji')
-        OR (id_miejsce_pracy = '$id_miejsce_pracy' AND data_startu_rezerwacji >= '$data_startu_rezerwacji' AND data_konca_rezerwacji >= '$data_konca_rezerwacji')
+        OR (id_miejsce_pracy = '$id_miejsce_pracy' AND data_startu_rezerwacji >= '$data_startu_rezerwacji' AND data_konca_rezerwacji >= '$data_konca_rezerwacji' AND data_konca_rezerwacji >= '$data_startu_rezerwacji')
         OR (id_miejsce_pracy = '$id_miejsce_pracy' AND data_startu_rezerwacji >= '$data_startu_rezerwacji' AND data_konca_rezerwacji <= '$data_konca_rezerwacji')
         ";
         if ($res = self::$pdo->query($existDate)) {
             if ($res->fetchColumn() > 0) {
+                print_r('Termin jest już zarezerwowany');
             } else {
                 if ($id_miejsce_pracy != 0) {
                     $sql = "
@@ -129,10 +130,11 @@ class Database {
                     VALUES ('','$id_miejsce_pracy', '$id_osoba', '$data_startu_rezerwacji', '$data_konca_rezerwacji')
                     ";
                 }
+                $stmt = self::$pdo->prepare($sql);
+                $stmt->execute(); 
+                print_r('Termin został zarezerwowany');
             }
         }
-        $stmt = self::$pdo->prepare($sql);
-        $stmt->execute();
    }
 
    static public function pokaz_zarezerwowane_terminy($id) {
