@@ -112,11 +112,24 @@ class Database {
         $id_osoba = $obj['idOsoba'];
         $data_startu_rezerwacji = $obj['dataStartuRezerwacji'];
         $data_konca_rezerwacji = $obj['dataKoncaRezerwacji'];
-        if ($id_miejsce_pracy != 0) {
-            $sql = "
-            INSERT INTO rezerwacja(id, id_miejsce_pracy, id_osoba, data_startu_rezerwacji, data_konca_rezerwacji)
-            VALUES ('','$id_miejsce_pracy', '$id_osoba', '$data_startu_rezerwacji', '$data_konca_rezerwacji')
-            ";
+        $existDate = "
+        SELECT * 
+        FROM rezerwacja 
+        WHERE (id_miejsce_pracy = '$id_miejsce_pracy' AND data_startu_rezerwacji <= '$data_startu_rezerwacji' AND data_konca_rezerwacji >= '$data_konca_rezerwacji')
+        OR (id_miejsce_pracy = '$id_miejsce_pracy' AND data_startu_rezerwacji <= '$data_startu_rezerwacji' AND data_konca_rezerwacji >= '$data_startu_rezerwacji' AND data_konca_rezerwacji <= '$data_konca_rezerwacji')
+        OR (id_miejsce_pracy = '$id_miejsce_pracy' AND data_startu_rezerwacji >= '$data_startu_rezerwacji' AND data_konca_rezerwacji >= '$data_konca_rezerwacji')
+        OR (id_miejsce_pracy = '$id_miejsce_pracy' AND data_startu_rezerwacji >= '$data_startu_rezerwacji' AND data_konca_rezerwacji <= '$data_konca_rezerwacji')
+        ";
+        if ($res = self::$pdo->query($existDate)) {
+            if ($res->fetchColumn() > 0) {
+            } else {
+                if ($id_miejsce_pracy != 0) {
+                    $sql = "
+                    INSERT INTO rezerwacja(id, id_miejsce_pracy, id_osoba, data_startu_rezerwacji, data_konca_rezerwacji)
+                    VALUES ('','$id_miejsce_pracy', '$id_osoba', '$data_startu_rezerwacji', '$data_konca_rezerwacji')
+                    ";
+                }
+            }
         }
         $stmt = self::$pdo->prepare($sql);
         $stmt->execute();
@@ -124,7 +137,7 @@ class Database {
 
    static public function pokaz_zarezerwowane_terminy($id) {
         self::connect();
-        $sql = "
+        $sql = "    
         SELECT a.data_startu_rezerwacji, a.data_konca_rezerwacji, b.imie, b.nazwisko, b.telefon, b.email, b.opis, c.oznaczenie
         FROM rezerwacja a
         LEFT JOIN osoba b ON b.id = a.id_osoba
