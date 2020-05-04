@@ -3,7 +3,7 @@ Aplikacja została stworzona za pomocą React (biblioteki JavaScript). Dzięki t
 Opis uruchomienia aplikacji:
 
 Do uruchomienia aplikacji potrzebne będą takie narzędzia jak (git, nodejs, npm, xampp). Poniżej umiesczam linki do pobrania poszczególnych komponentów.
-1. https://git-scm.com/
+1. Git - https://git-scm.com/
 2. Node.js https://nodejs.org/en/ - npm powinien zostać zainstalowany razem z node.
 3. Xampp - https://www.apachefriends.org/pl/index.html
 
