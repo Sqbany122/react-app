@@ -1,5 +1,7 @@
 <?php 
 header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Headers: *");
+header("Access-Control-Allow-Methods: *");
 
 class Database {
     
@@ -63,14 +65,74 @@ class Database {
         echo json_encode($stmt->fetchAll());
    }
 
-   static public function wstaw_wolne_wyposazenie($id_miejsce_pracy, $id_wyposazenie) {
+   static public function wstaw_wolne_wyposazenie() {
         self::connect();
+        $json = file_get_contents('php://input');
+        $obj = json_decode($json, true);
+        $id_wyposazenia = $obj['idWyposazenia'];
+        $id_miejsce_pracy = $obj['idMiejscePracy'];
         $sql = "
         UPDATE wyposazenie
-        SET id_miejsce_pracy = :id_miejsce_pracy
-        WHERE id = id_wyposazenie
+        SET id_miejsce_pracy = '$id_miejsce_pracy'
+        WHERE id = '$id_wyposazenia'  
         ";
         $stmt = self::$pdo->prepare($sql);
         $stmt->execute();
    }
+
+   static public function usun_wyposazenie_ze_stanowiska() {
+        self::connect();
+        $json = file_get_contents('php://input');
+        $obj = json_decode($json, true);
+        $id_wyposazenia = $obj['idWyposazenia'];
+        $sql = "
+        UPDATE wyposazenie
+        SET id_miejsce_pracy = 0
+        WHERE id = '$id_wyposazenia'
+        ";
+        $stmt = self::$pdo->prepare($sql);
+        $stmt->execute();
+   }
+
+   static public function pokaz_osoby() {
+        self::connect();
+        $sql = "
+        SELECT * 
+        FROM osoba";
+        $stmt = self::$pdo->prepare($sql);
+        $stmt->execute();
+        echo json_encode($stmt->fetchAll());
+    }
+
+    static public function dodaj_termin_rezerwacji() {
+        self::connect();
+        $json = file_get_contents('php://input');
+        $obj = json_decode($json, true);
+        $id_miejsce_pracy = $obj['idMiejscePracy'];
+        $id_osoba = $obj['idOsoba'];
+        $data_startu_rezerwacji = $obj['dataStartuRezerwacji'];
+        $data_konca_rezerwacji = $obj['dataKoncaRezerwacji'];
+        if ($id_miejsce_pracy != 0) {
+            $sql = "
+            INSERT INTO rezerwacja(id, id_miejsce_pracy, id_osoba, data_startu_rezerwacji, data_konca_rezerwacji)
+            VALUES ('','$id_miejsce_pracy', '$id_osoba', '$data_startu_rezerwacji', '$data_konca_rezerwacji')
+            ";
+        }
+        $stmt = self::$pdo->prepare($sql);
+        $stmt->execute();
+   }
+
+   static public function pokaz_zarezerwowane_terminy($id) {
+        self::connect();
+        $sql = "
+        SELECT a.data_startu_rezerwacji, a.data_konca_rezerwacji, b.imie, b.nazwisko, b.telefon, b.email, b.opis, c.oznaczenie
+        FROM rezerwacja a
+        LEFT JOIN osoba b ON b.id = a.id_osoba
+        LEFT JOIN miejsca_pracy c ON c.id = a.id_miejsce_pracy
+        WHERE c.id = :id
+        ";
+        $stmt = self::$pdo->prepare($sql);
+        $stmt->execute(array(':id' => $id));
+        echo json_encode($stmt->fetchAll());
+    }
 }

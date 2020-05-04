@@ -1,3 +1,3 @@
 <?php
 require_once('connect.php');
-Database::get_miejsca_pracy();
+Database::pokaz_osoby();

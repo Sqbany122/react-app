@@ -39,7 +39,7 @@ class Rezerwacja extends React.Component {
       return (
         <div className="container">
             <div className="mt-5">
-            <h1 className="text-center mb-5">Rezerwacja</h1>
+            <h1 className="text-center mb-5">Rezerwacja stanowisk pracy</h1>
                 <table className="table table-bordered">
                     <thead>
                         <tr className="text-center">

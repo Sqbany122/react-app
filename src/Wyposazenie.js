@@ -24,8 +24,8 @@ class Wyposazenie extends React.Component {
       let { wyposazenie } = this.state;
 
       return (
-        <div className="container pt-5">
-          <h1 className="mb-5">Dostępne wyposażenie</h1>
+        <div className="container pt-5 mb-5">
+          <h1 className="text-center mb-5">Dostępne wyposażenie</h1>
             <table className="table table-bordered">
               <thead>
                 <tr className="text-center">
