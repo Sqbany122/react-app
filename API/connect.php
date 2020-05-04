@@ -117,7 +117,7 @@ class Database {
         FROM rezerwacja 
         WHERE (id_miejsce_pracy = '$id_miejsce_pracy' AND data_startu_rezerwacji <= '$data_startu_rezerwacji' AND data_konca_rezerwacji >= '$data_konca_rezerwacji')
         OR (id_miejsce_pracy = '$id_miejsce_pracy' AND data_startu_rezerwacji <= '$data_startu_rezerwacji' AND data_konca_rezerwacji >= '$data_startu_rezerwacji' AND data_konca_rezerwacji <= '$data_konca_rezerwacji')
-        OR (id_miejsce_pracy = '$id_miejsce_pracy' AND data_startu_rezerwacji >= '$data_startu_rezerwacji' AND data_konca_rezerwacji >= '$data_konca_rezerwacji' AND data_konca_rezerwacji >= '$data_startu_rezerwacji')
+        OR (id_miejsce_pracy = '$id_miejsce_pracy' AND data_startu_rezerwacji >= '$data_startu_rezerwacji' AND data_startu_rezerwacji <= '$data_konca_rezerwacji')
         OR (id_miejsce_pracy = '$id_miejsce_pracy' AND data_startu_rezerwacji >= '$data_startu_rezerwacji' AND data_konca_rezerwacji <= '$data_konca_rezerwacji')
         ";
         if ($res = self::$pdo->query($existDate)) {
@@ -145,6 +145,7 @@ class Database {
         LEFT JOIN osoba b ON b.id = a.id_osoba
         LEFT JOIN miejsca_pracy c ON c.id = a.id_miejsce_pracy
         WHERE c.id = :id
+        ORDER BY a.data_startu_rezerwacji ASC
         ";
         $stmt = self::$pdo->prepare($sql);
         $stmt->execute(array(':id' => $id));
